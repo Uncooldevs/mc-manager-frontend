@@ -1,25 +1,44 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import {BrowserRouter, Link, Outlet, Route, Routes} from "react-router-dom";
+
+
+const Layout = () => {
+
+  return <div>
+      <ul className="nav">
+          <li className="nav-item">
+              <Link className="nav-link" to="/">Home</Link>
+          </li>
+          <li className="nav-item">
+              <Link className="nav-link" to="/create">Create Server</Link>
+          </li>
+          <li className="nav-item">
+              <Link className="nav-link" to="/settings">Settings</Link>
+          </li>
+      </ul>
+    <div className="content">
+      <Outlet/>
+    </div>
+
+  </div>
+};
 
 function App() {
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <div className="App">
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Layout/>}>
+              <Route index element={<h1>Home</h1>}/>
+              <Route path="create" element={<h1>create</h1>}/>
+              <Route path="settings" element={<h1>settings</h1>}/>
+              <Route path="server/:server_id" element={<h1>server</h1>}/>
+              <Route path="*" element={<h1>404</h1>}/>
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </div>
   );
 }
 
