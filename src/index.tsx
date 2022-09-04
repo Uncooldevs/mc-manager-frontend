@@ -19,6 +19,17 @@ const theme = createTheme({
             default: "#0a1929",
         }
     },
+    components: {
+        MuiCard:{
+            styleOverrides: {
+                root: {
+                    backgroundColor: "#2a3949",
+                    borderRadius: "10px",
+                    padding: "10px",
+                }
+            }
+        }
+    }
 });
 root.render(
     <React.StrictMode>

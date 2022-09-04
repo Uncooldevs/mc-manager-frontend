@@ -1,24 +1,20 @@
-import {Button, CircularProgress} from "@mui/material";
-import {default_ip} from "../utils/globals";
+import {Button, Card, CircularProgress, Stack} from "@mui/material";
 import ServerItem from "./ServerItem";
 import {BasicServer} from "../models/Server";
 import {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
+import {get_servers} from "../api";
 
 
 function Homepage() {
 
-    const [servers, set_servers] = useState<BasicServer[]>()
+    const [servers, set_servers] = useState<BasicServer[] | string>()
 
     function load_servers() {
-        fetch(default_ip + "/servers")
-            .then(response => response.json())
-            .then((server_list: { servers: [BasicServer] }) => {
-                    set_servers(server_list.servers)
-                    console.log(servers)
-                }
-            ).catch(() => {
-            console.error("Failed...")
+        get_servers().then(
+            set_servers
+        ).catch((err)=>{
+            set_servers(err.toString())
         })
     }
 
@@ -29,8 +25,10 @@ function Homepage() {
     function render_serverlist() {
         if (servers === undefined) {
             return <CircularProgress/>
-        } else if (servers.length === 0) {
-            return "No servers found"
+        } else if (typeof servers === "string") {
+            return <Card>{servers}</Card>
+        }else if(servers.length === 0){
+            return <Card>No servers found</Card>
         }
         return servers.map((item: BasicServer, index: number) => {
             return <ServerItem server={item} key={index}/>
@@ -44,8 +42,9 @@ function Homepage() {
             <Button variant="contained" onClick={load_servers}>Reload</Button>
         </div>
 
-        {render_serverlist()}
-
+        <Stack spacing={2}>
+            {render_serverlist()}
+        </Stack>
     </div>
 }
 

@@ -3,7 +3,7 @@ import {BrowserRouter, Outlet, Route, Routes} from "react-router-dom";
 import Link from "@mui/material/Link"
 import Homepage from "./Homepage/Homepage";
 import CreateServerPage from "./CreateServer/CreateServerPage";
-
+import ServerInfo from "./ServerInfo/ServerInfo";
 
 const Layout = () => {
   return <div><div className="content">
@@ -23,7 +23,7 @@ function App() {
               <Route index element={<Homepage/>}/>
               <Route path="create" element={<CreateServerPage/>}/>
               <Route path="settings" element={<h1>settings</h1>}/>
-              <Route path="server/:server_id" element={<h1>server</h1>}/>
+              <Route path="server/:server_id" element={<ServerInfo/>}/>
               <Route path="*" element={<h1>404</h1>}/>
             </Route>
           </Routes>
