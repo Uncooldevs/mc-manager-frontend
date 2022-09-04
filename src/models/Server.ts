@@ -17,3 +17,11 @@ export interface BasicServer{
     status: ServerStatus
     server_id: string
 }
+
+export interface Server{
+    name: string
+    version: string
+    status: ServerStatus
+    sid: string
+    properties: {}
+}
