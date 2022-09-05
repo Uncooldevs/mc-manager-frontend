@@ -1,0 +1,47 @@
+.console {
+    width: 100%;
+    height: 300px;
+    border: 2px solid black;
+    text-align: left;
+    border-radius: 20px;
+    padding: 10px;
+}
+
+.console textarea{
+    width: 100%;
+    height: 90%;
+    overflow: auto;
+    white-space: pre;
+    font-family: monospace;
+    display: inherit;
+    border: none;
+}
+
+.console textarea::-webkit-scrollbar{
+    width: 5px;
+    height: 5px;
+}
+
+.console textarea::-webkit-scrollbar-track {
+    background: none;
+}
+
+/* Handle */
+.console textarea::-webkit-scrollbar-thumb {
+}
+
+/* Handle on hover */
+.console textarea::-webkit-scrollbar-thumb:hover {
+}
+
+.console input[type=text]{
+    border-width: 0;
+    padding: 2px;
+    width: 100%;
+}
+.console input[type=text]:focus{
+    border: none;
+}
+.console input[type=text]:hover{
+    border: none;
+}

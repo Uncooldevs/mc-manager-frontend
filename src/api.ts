@@ -21,3 +21,16 @@ export async function get_server(sid: string): Promise<Server>{
     }
     return await response.json()
 }
+
+export async function start_server(sid: string): Promise<void>{
+    const response = await fetch(default_ip + "/servers/" + sid + "/start", {method: "POST"})
+    if (response.status !== 200){
+        throw new Error("Can't start server")
+    }
+}
+export async function stop_server(sid: string): Promise<void>{
+    const response = await fetch(default_ip + "/servers/" + sid + "/stop", {method: "POST"})
+    if (response.status !== 200){
+        throw new Error("Can't stop server")
+    }
+}
