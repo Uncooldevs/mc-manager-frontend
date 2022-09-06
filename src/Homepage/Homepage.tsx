@@ -31,6 +31,7 @@ function Homepage() {
             return <Card>No servers found</Card>
         }
         return servers.map((item: BasicServer, index: number) => {
+            
             return <ServerItem server={item} key={index}/>
         })
     }

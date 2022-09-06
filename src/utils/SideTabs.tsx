@@ -73,12 +73,12 @@ export default function SideTabBarWithBack(props: { tabs: TabEntry[] }) {
             >
                 <Tab label="Back" {...a11yProps(0)} />
                 {props.tabs.map((tab, index) =>
-                    <Tab label={tab.label} {...a11yProps(index + 1)} />)}
+                    <Tab label={tab.label} {...a11yProps(index + 1)} key={index} />)}
             </Tabs>
 
             {
                 props.tabs.map((tab, index) =>
-                    <TabPanel index={index + 1} value={value}>{tab.content}</TabPanel>)
+                    <TabPanel index={index + 1} value={value} key={index}>{tab.content}</TabPanel>)
             }
 
 

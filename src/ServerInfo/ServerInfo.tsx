@@ -6,6 +6,7 @@ import {get_server} from "../api";
 import {Metrics, Players, ServerState} from "./state";
 import ServerSettings from "./ServerSettings";
 import {default_ip} from "../utils/globals";
+import {Server} from "../models/Server";
 
 
 function ServerInfo() {
@@ -25,6 +26,12 @@ function ServerInfo() {
 
     }
 
+    function scrollToBottom() {
+        const text_area = document.getElementById("ta_console")
+        if (text_area != null)
+            text_area.scrollTop = text_area.scrollHeight
+    }
+
     useEffect(() => {
         load_sever()
     }, [])
@@ -37,16 +44,26 @@ function ServerInfo() {
         ws.current = new WebSocket(`ws://${default_ip.replace("http://", "")}/servers/${current_server?.server.sid}/websocket`)
 
         ws.current.onmessage = (msg) => {
-            const data: {type: string, output?: string, players?: Players, "metrics": Metrics} = JSON.parse(msg.data)
+            const data: {type: string, value: any} = JSON.parse(msg.data)
 
             if (data.type === "output") {
-                setCurrentServer((values)=>({...values, output: values?.output + (data.output ?? "")}))
+                setCurrentServer((values)=>({...values, output: values?.output + (data.value ?? "") + "\n"}))
+                scrollToBottom()
             }
             else if (data.type === "players") {
-                setCurrentServer((values)=>({...values, players: data.players}))
+                setCurrentServer((values)=>({...values, players: data.value}))
             }
-            else if (data.type === "metrics"){
-                setCurrentServer((values)=>({...values, metrics: data.metrics}))
+            else if (data.type === "system_metrics"){
+                setCurrentServer((values)=>({...values, metrics: data.value}))
+            }
+            else if(data.type === "status"){
+                const server: Server | undefined = current_server.server
+                if(server === undefined){
+                    return
+                }
+                server.status = data.value
+                setCurrentServer((values)=>({...values, server: server}))
+
             }
 
         }
@@ -68,7 +85,7 @@ function ServerInfo() {
             ws.current?.close()
         }
 
-    }, [current_server?.server?.sid, current_server?.server?.status])
+    }, [current_server?.server?.sid])
 
 
     if (error !== "") {

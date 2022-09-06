@@ -15,7 +15,7 @@ export interface BasicServer{
     icon?: string
     version: string
     status: ServerStatus
-    server_id: string
+    sid: string
 }
 
 export interface Server{
