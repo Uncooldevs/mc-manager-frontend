@@ -9,7 +9,6 @@ const Layout = () => {
   return <div><div className="content">
       <Outlet/>
     </div>
-
   Github: <Link href="https://github.com/orgs/Uncooldevs/repositories">Repositories</Link>
   </div>
 };

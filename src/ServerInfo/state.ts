@@ -12,9 +12,9 @@ export interface OpPlayer extends Player {
 }
 
 export interface Players {
-    online_players: [Player],
-    "op_players": [OpPlayer],
-    "banned_players": [Player]
+    online_players: Player[],
+    op_players: OpPlayer[],
+    banned_players: Player[]
 }
 
 export interface Metrics {

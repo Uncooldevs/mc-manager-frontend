@@ -23,29 +23,50 @@ function Dashboard(props: { server: ServerState | undefined, update_state_func: 
         </div>
     }
 
-    return <div>
-        <h1>Dashboard - {props.server.server?.name}</h1>
-        <h3>{props.server.server.status}</h3>
-        <Button variant="contained" onClick={() => {
-            if (props.server?.server?.sid === undefined) {
-                return
+    function start_stop_button() {
+        let text: string = "Loading";
+        let disabled: boolean = false;
+        let func: any;
+
+        if (props.server?.server === undefined) {
+            return <></>
+        }
+
+        if (props.server.server.status === ServerStatus.RUNNING) {
+            text = "Stop"
+            func = () => {
+                if (props.server?.server === undefined) {
+                    return
+                }
+                stop_server(props.server.server.sid).catch(console.error)
             }
-            props.update_state_func((values) => ({...values, output: ""}))
-            start_server(props.server.server.sid).catch(console.error)
-        }} disabled={props.server.server?.status === ServerStatus.RUNNING}>Start</Button>
-        <Button variant={"contained"} disabled={props.server.server?.status !== ServerStatus.RUNNING}
-                onClick={() => {
-                    if (props.server?.server?.sid === undefined) {
-                        return
-                    }
-                    stop_server(props.server.server.sid).catch(console.error)
-                }}
-        >Stop</Button>
+        } else if (props.server.server.status === ServerStatus.STOPPED) {
+            text = "Start"
+            func = () => {
+                if (props.server?.server === undefined) {
+                    return
+                }
+                props.update_state_func((values) => ({...values, output: ""}))
+                start_server(props.server.server.sid).catch(console.error)
+            }
+        }
+        else {
+            disabled = true
+        }
 
-        <Console output={props.server.output ?? ""}/>
+        return <Button variant="contained" onClick={func} disabled={disabled}
+        >{text}</Button>
+    }
 
-        {render_metrics()}
-    </div>
+    return <div>
+            <h1>Dashboard - {props.server.server?.name}</h1>
+            <h3>{props.server.server.status}</h3>
+            {start_stop_button()}
+
+            <Console output={props.server.output ?? ""}/>
+
+            {render_metrics()}
+        </div>
 
 }
 

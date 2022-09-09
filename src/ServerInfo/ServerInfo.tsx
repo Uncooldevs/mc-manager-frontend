@@ -3,22 +3,26 @@ import SideTabBarWithBack, {TabEntry} from "../utils/SideTabs";
 import Dashboard from "./Dashboard";
 import {useEffect, useRef, useState} from "react";
 import {get_server} from "../api";
-import {Metrics, Players, ServerState} from "./state";
+import {Players, ServerState} from "./state";
 import ServerSettings from "./ServerSettings";
 import {default_ip} from "../utils/globals";
 import {Server} from "../models/Server";
+import PlayerList from "./PlayerTab";
 
 
 function ServerInfo() {
     const {server_id} = useParams()
-    const [current_server, setCurrentServer] = useState<ServerState>()
+    const [current_server, setCurrentServer] = useState<ServerState>({
+        output: "",
+        properties: {},
+        server: undefined, players: undefined, metrics: undefined})
     const [error, setError] = useState<string>("")
     const ws = useRef<WebSocket>()
 
 
     function load_sever() {
         get_server(server_id as string).then((server) => {
-            setCurrentServer((values)=>({...values, server: server}))
+            setCurrentServer((values) => ({...values, server: server}))
         }).catch((error) => {
             console.log(error)
             setError(error.toString())
@@ -44,25 +48,22 @@ function ServerInfo() {
         ws.current = new WebSocket(`ws://${default_ip.replace("http://", "")}/servers/${current_server?.server.sid}/websocket`)
 
         ws.current.onmessage = (msg) => {
-            const data: {type: string, value: any} = JSON.parse(msg.data)
+            const data: { type: string, value: any } = JSON.parse(msg.data)
 
             if (data.type === "output") {
-                setCurrentServer((values)=>({...values, output: values?.output + (data.value ?? "") + "\n"}))
+                setCurrentServer((values) => ({...values, output: values?.output + (data.value ?? "") + "\n"}))
                 scrollToBottom()
-            }
-            else if (data.type === "players") {
-                setCurrentServer((values)=>({...values, players: data.value}))
-            }
-            else if (data.type === "system_metrics"){
-                setCurrentServer((values)=>({...values, metrics: data.value}))
-            }
-            else if(data.type === "status"){
+            } else if (data.type === "players") {
+                setCurrentServer((values) => ({...values, players: data.value}))
+            } else if (data.type === "system_metrics") {
+                setCurrentServer((values) => ({...values, metrics: data.value}))
+            } else if (data.type === "status") {
                 const server: Server | undefined = current_server.server
-                if(server === undefined){
+                if (server === undefined) {
                     return
                 }
                 server.status = data.value
-                setCurrentServer((values)=>({...values, server: server}))
+                setCurrentServer((values) => ({...values, server: server}))
 
             }
 
@@ -70,16 +71,13 @@ function ServerInfo() {
 
         ws.current.onopen = () => {
             console.log("Websocket opened")
-            setCurrentServer((values)=>({...values, output: ""}))
+            setCurrentServer((values) => ({...values, output: ""}))
         }
-
         ws.current.onerror = (err) => {
             console.log(err)
         }
-
         ws.current.onclose = () => {
             console.log("Websocket closed")
-
         }
         return () => {
             ws.current?.close()
@@ -96,7 +94,7 @@ function ServerInfo() {
     } else {
         return <SideTabBarWithBack tabs={[
             new TabEntry("Dashboard", <Dashboard server={current_server} update_state_func={setCurrentServer}/>),
-            new TabEntry("Players", <h1>Players</h1>),
+            new TabEntry("Players", <PlayerList server={current_server}/>),
             new TabEntry("Settings", <ServerSettings/>)
         ]}/>
     }
