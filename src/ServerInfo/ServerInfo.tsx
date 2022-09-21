@@ -2,7 +2,7 @@ import {Link, useParams} from "react-router-dom";
 import SideTabBarWithBack, {TabEntry} from "../utils/SideTabs";
 import Dashboard from "./Dashboard";
 import {useEffect, useRef, useState} from "react";
-import {get_server} from "../api";
+import * as api from "../api";
 import {Players, ServerState} from "./state";
 import ServerSettings from "./ServerSettings";
 import {default_ip} from "../utils/globals";
@@ -21,7 +21,7 @@ function ServerInfo() {
 
 
     function load_sever() {
-        get_server(server_id as string).then((server) => {
+        api.get_server(server_id as string).then((server) => {
             setCurrentServer((values) => ({...values, server: server}))
         }).catch((error) => {
             console.log(error)

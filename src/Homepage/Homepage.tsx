@@ -3,7 +3,7 @@ import ServerItem from "./ServerItem";
 import {BasicServer} from "../models/Server";
 import {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
-import {get_servers} from "../api";
+import * as api from "../api";
 
 
 function Homepage() {
@@ -11,12 +11,13 @@ function Homepage() {
     const [servers, set_servers] = useState<BasicServer[] | string>()
 
     function load_servers() {
-        get_servers().then(
+        api.get_servers().then(
             set_servers
         ).catch((err)=>{
             set_servers(err.toString())
         })
     }
+
 
     useEffect(() => {
         load_servers()
@@ -31,7 +32,7 @@ function Homepage() {
             return <Card>No servers found</Card>
         }
         return servers.map((item: BasicServer, index: number) => {
-            
+
             return <ServerItem server={item} key={index}/>
         })
     }

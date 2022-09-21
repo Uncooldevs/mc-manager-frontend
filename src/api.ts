@@ -34,3 +34,13 @@ export async function stop_server(sid: string): Promise<void>{
         throw new Error("Can't stop server")
     }
 }
+
+export async function get_available_versions(): Promise<string[]>{
+    const resp = await fetch(default_ip + "/available_versions")
+    if (resp.status !== 200){
+        throw new Error("Cant fetch available versions")
+    }
+
+    return (await resp.json()).available_versions
+
+}

@@ -22,7 +22,7 @@ interface CreateModel {
     world_generation_settings?: WorldGenerationSettings
 }
 
-function CreateServerPage() {
+function CreateServerPage(props: {available_versions: string[]}) {
     const [err_text, set_err_text] = useState("");
     const [info_text, set_info_text] = useState("");
     const [world_generation_settings, set_world_generation_settings] = useState<WorldGenerationSettings>({
@@ -77,8 +77,11 @@ function CreateServerPage() {
                        value={model.name} name="name" placeholder="My Server" required={true}/>
             <Select label="Version" variant="outlined" value={model.version}
                     onChange={handleChange} name="version">
-                <MenuItem value="latest">latest</MenuItem>
-                <MenuItem value="1.19.2">1.19.2</MenuItem>
+                {
+                    props.available_versions.map((item)=>{
+                        return <MenuItem value={item}>{item}</MenuItem>
+                    })
+                }
 
             </Select>
 
