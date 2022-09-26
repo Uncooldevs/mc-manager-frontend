@@ -63,7 +63,7 @@ function Dashboard(props: { server: ServerState | undefined, update_state_func: 
             <h3>{props.server.server.status}</h3>
             {start_stop_button()}
 
-            <Console output={props.server.output ?? ""}/>
+            <Console output={props.server.output ?? ""} sid={props.server.server.sid}/>
 
             {render_metrics()}
         </div>

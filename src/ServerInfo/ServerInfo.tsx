@@ -22,12 +22,11 @@ function ServerInfo() {
 
     function load_sever() {
         api.get_server(server_id as string).then((server) => {
-            setCurrentServer((values) => ({...values, server: server}))
+            setCurrentServer((values) => ({...values, server: server, properties: server.properties}))
         }).catch((error) => {
             console.log(error)
             setError(error.toString())
         })
-
     }
 
     function scrollToBottom() {
@@ -66,6 +65,9 @@ function ServerInfo() {
                 setCurrentServer((values) => ({...values, server: server}))
 
             }
+            else if (data.type === "properties") {
+                setCurrentServer((values) => ({...values, properties: data.value}))
+            }
 
         }
 
@@ -95,7 +97,7 @@ function ServerInfo() {
         return <SideTabBarWithBack tabs={[
             new TabEntry("Dashboard", <Dashboard server={current_server} update_state_func={setCurrentServer}/>),
             new TabEntry("Players", <PlayerList server={current_server}/>),
-            new TabEntry("Settings", <ServerSettings/>)
+            new TabEntry("Settings", <ServerSettings server={current_server}/>)
         ]}/>
     }
 }

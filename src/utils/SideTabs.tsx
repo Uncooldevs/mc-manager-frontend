@@ -61,7 +61,7 @@ export default function SideTabBarWithBack(props: { tabs: TabEntry[] }) {
 
     return (
         <Box
-            sx={{flexGrow: 1, display: 'flex', height: 224}}
+            sx={{flexGrow: 1, display: 'flex', height: "100%"}}
         >
             <Tabs
                 orientation="vertical"
