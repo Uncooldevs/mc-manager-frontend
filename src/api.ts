@@ -59,3 +59,14 @@ export async function get_available_versions(): Promise<string[]> {
     return (await resp.json()).available_versions
 
 }
+
+export async function create_backup(sid: string, world_name: string): Promise<boolean> {
+    const resp = await fetch(default_ip + "/servers/" + sid + "/backup",
+        {
+            method: "POST", body: JSON.stringify({
+                world_name: world_name
+            }), headers: {'Content-Type': 'application/json'}
+        },
+    )
+    return resp.status == 200
+}

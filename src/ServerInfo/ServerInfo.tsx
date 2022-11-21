@@ -8,6 +8,7 @@ import ServerSettings from "./ServerSettings";
 import {default_ip} from "../utils/globals";
 import {Server} from "../models/Server";
 import PlayerList from "./PlayerTab";
+import Worlds from "./Worlds";
 
 
 function ServerInfo() {
@@ -97,7 +98,8 @@ function ServerInfo() {
         return <SideTabBarWithBack tabs={[
             new TabEntry("Dashboard", <Dashboard server={current_server} update_state_func={setCurrentServer}/>),
             new TabEntry("Players", <PlayerList server={current_server}/>),
-            new TabEntry("Settings", <ServerSettings server={current_server}/>)
+            new TabEntry("Settings", <ServerSettings server={current_server}/>),
+            new TabEntry("Worlds", <Worlds server={current_server}/>)
         ]}/>
     }
 }

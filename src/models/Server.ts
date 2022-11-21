@@ -24,4 +24,22 @@ export interface Server{
     status: ServerStatus
     sid: string
     properties: {}
+    worlds: World[]
+    backups: { [key: string]: Backup }
 }
+
+export interface World{
+    name: string,
+    path: string,
+    version: string
+}
+
+export interface Backup {
+    sid: string
+    time: string
+    world: string
+    version: string
+    path: string
+}
+
+
