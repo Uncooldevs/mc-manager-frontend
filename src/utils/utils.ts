@@ -4,7 +4,7 @@ export function get_size(bytes: number): string {
         if (bytes < 1024) {
             return `${precisionRound(bytes, 2)} ${units[i]}B`
         }
-        bytes /= 1024
+        bytes /= 1000
     }
     // will never happen
     return bytes.toString() + "B"
