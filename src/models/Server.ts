@@ -40,6 +40,7 @@ export interface Backup {
     world: string
     version: string
     path: string
+    size: number
 }
 
 

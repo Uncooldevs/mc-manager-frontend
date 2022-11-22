@@ -2,6 +2,7 @@ import {ServerState} from "./state";
 import {Button, Card, CircularProgress} from "@mui/material";
 import {create_backup} from "../api";
 import {default_ip} from "../utils/globals";
+import {get_size} from "../utils/utils";
 
 function Worlds(props: { server: ServerState }) {
 
@@ -29,6 +30,7 @@ function Worlds(props: { server: ServerState }) {
                         <p>{bid}</p>
                         <a href={default_ip + "/servers/backups/" + bid} target={"_blank"}><Button
                         variant={"contained"}>Download</Button></a>
+                            <p>{get_size(backup.size)}</p>
                         </div>
                     }
 
