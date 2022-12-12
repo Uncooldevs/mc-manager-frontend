@@ -70,3 +70,17 @@ export async function create_backup(sid: string, world_name: string): Promise<bo
     )
     return resp.status == 200
 }
+
+export async function restore_backup(bid: string): Promise<boolean>{
+    const resp = await fetch(default_ip + "/servers/backups/" + bid + "/restore", {
+        method: "POST", headers: {"Content-Type": "application/json"}
+    })
+    return resp.status == 202
+}
+
+export async function delete_backup(bid: string): Promise<boolean>{
+    const resp = await fetch(default_ip + "/servers/backups/" + bid + "/delete", {
+        method: "POST", headers: {"Content-Type": "application/json"}
+    })
+    return resp.status == 200
+}
